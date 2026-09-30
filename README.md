@@ -7,31 +7,25 @@ The private live repository selects reviewed commits from this repository and
 provides environment-specific values. Do not add internal addresses, DNS names,
 hardware identifiers, credentials, cluster history, or recovery material here.
 
-## Bootstrap order
+## Dependency and bootstrap order
 
-1. Cilium
-2. Flux
+1. Cilium, permanently managed by OpenTofu in the public foundation repository
+2. Flux, which begins reconciliation of this platform catalog
 3. persistent storage
 4. OpenBao
 5. External Secrets Operator
 6. narrowly allowlisted SOPS exceptions
 7. applications and namespace-scoped network policies
 
-Cilium is installed once as a reviewed day-0 operation because Flux requires
-working pod networking. Flux then adopts the identical release and values.
+Cilium is a reviewed day-0 dependency because Flux requires working pod
+networking. This repository must not contain a Cilium `HelmRelease` or otherwise
+compete with OpenTofu for ownership.
 
-## Pinned Cilium release
+## Cilium ownership
 
-The target cluster runs Kubernetes 1.37.0. Cilium 1.20.2 guarantees compatibility
-through Kubernetes 1.36; the operator independently validated and explicitly
-accepted its use with Kubernetes 1.37. Treat that decision as a documented risk
-acceptance, not as upstream support.
-
-The generic Talos values are recorded in
-[`components/cilium/values-talos.yaml`](components/cilium/values-talos.yaml).
-The chart version, immutable OCI digest, downloaded-chart checksum, and signing
-identity are pinned in [`components/cilium/release.yaml`](components/cilium/release.yaml).
-Environment-specific migration values remain private.
+The public foundation repository contains the dedicated Cilium OpenTofu root,
+the chart and values pins, and the separate encrypted state configuration. Flux
+starts above this boundary and manages the remaining platform components.
 
 ## Validation
 
