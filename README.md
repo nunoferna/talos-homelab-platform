@@ -20,16 +20,18 @@ hardware identifiers, credentials, cluster history, or recovery material here.
 Cilium is installed once as a reviewed day-0 operation because Flux requires
 working pod networking. Flux then adopts the identical release and values.
 
-## Current compatibility gate
+## Pinned Cilium release
 
-The target cluster runs Kubernetes 1.37.0. Stable Cilium 1.20.2 guarantees
-compatibility only through Kubernetes 1.36, while Cilium 1.21 is prerelease.
-This repository intentionally contains no deployable Cilium release until a
-stable version explicitly lists Kubernetes 1.37 in its tested matrix.
+The target cluster runs Kubernetes 1.37.0. Cilium 1.20.2 guarantees compatibility
+through Kubernetes 1.36; the operator independently validated and explicitly
+accepted its use with Kubernetes 1.37. Treat that decision as a documented risk
+acceptance, not as upstream support.
 
 The generic Talos values are recorded in
 [`components/cilium/values-talos.yaml`](components/cilium/values-talos.yaml).
-They do not include a chart version or environment-specific migration values.
+The chart version, immutable OCI digest, downloaded-chart checksum, and signing
+identity are pinned in [`components/cilium/release.yaml`](components/cilium/release.yaml).
+Environment-specific migration values remain private.
 
 ## Validation
 

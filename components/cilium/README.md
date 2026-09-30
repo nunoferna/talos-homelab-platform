@@ -1,8 +1,8 @@
 # Cilium
 
-This directory records generic Talos-specific Cilium configuration. It is not
-deployable until a stable chart version compatible with Kubernetes 1.37 is
-pinned in a reviewed `HelmRelease`.
+This directory records generic Talos-specific Cilium configuration. Cilium
+1.20.2 is pinned after explicit operator acceptance of its Kubernetes 1.37
+compatibility risk; upstream's guaranteed matrix for this release ends at 1.36.
 
 `values-talos.yaml` follows Cilium's Talos guidance:
 
@@ -22,10 +22,10 @@ Do not place migration pod CIDRs, LAN addresses, API endpoints, or temporary
 policy-disable overrides in this public repository. The private live repository
 owns those values.
 
-Before adding a release:
+Before installing or changing the release:
 
-1. Confirm the stable Cilium compatibility matrix includes Kubernetes 1.37.
-2. Pin the OCI chart version and immutable digest.
-3. Verify its signature.
+1. Reconfirm the upstream compatibility matrix and documented risk acceptance.
+2. Verify the pinned OCI manifest digest and downloaded chart checksum.
+3. Verify the signature against the pinned issuer and identity expression.
 4. Render the chart and review all cluster-scoped permissions.
 5. Validate the day-0 installation and Flux adoption use identical values.
